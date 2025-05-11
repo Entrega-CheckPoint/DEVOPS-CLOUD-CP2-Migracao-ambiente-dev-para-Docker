@@ -14,8 +14,8 @@ docker run -d \
     -e MYSQL_USER=mottuser \
     -e MYSQL_PASSWORD=mottupass \
     -p 3306:3306 \
-    mysql/mysql-server:latest
+    mysql:8.0
 
 docker run -d --name adminer-rm557313 --network rm557313-net -p 8081:8080 adminer
 
-docker run -d --name mottu-api-rm557313 --network rm557313-net -p 8080:80 mottu-api
+docker run -d --name mottu-api-rm557313 --network rm557313-net -p 8080:8080 mottu-api
