@@ -14,6 +14,10 @@ docker run -d \
     -p 3306:3306 \
     mysql:8.0
 
+sleep 30
+
+docker exec -i mysql-rm557313 mysql -umottuser -pmottupass mottuDB < cria_tabelas.sql
+
 docker run -d --name adminer-rm557313 --network rm557313-net -p 8081:8080 adminer
 
 docker build -t mottu-api .
