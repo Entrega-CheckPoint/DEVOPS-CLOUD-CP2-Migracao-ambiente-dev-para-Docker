@@ -4,8 +4,6 @@ cd deploy
 
 docker network create rm557313-net
 
-docker build -t mottu-api .
-
 docker run -d \
     --name mysql-rm557313 \
     --network rm557313-net \
@@ -17,5 +15,7 @@ docker run -d \
     mysql:8.0
 
 docker run -d --name adminer-rm557313 --network rm557313-net -p 8081:8080 adminer
+
+docker build -t mottu-api .
 
 docker run -d --name mottu-api-rm557313 --network rm557313-net -p 8080:8080 mottu-api
