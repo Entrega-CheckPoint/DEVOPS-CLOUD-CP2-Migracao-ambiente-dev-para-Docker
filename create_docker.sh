@@ -5,14 +5,15 @@ cd deploy
 docker network create rm557313-net
 
 docker run -d \
-    --name mysql-rm557313 \
-    --network rm557313-net \
-    -e MYSQL_ROOT_PASSWORD=senha123 \
-    -e MYSQL_DATABASE=mottuDB \
-    -e MYSQL_USER=mottuser \
-    -e MYSQL_PASSWORD=mottupass \
-    -p 3306:3306 \
-    mysql:8.0
+  --name mysql-rm557313 \
+  --network rm557313-net \
+  -e MYSQL_ROOT_PASSWORD=senha123 \
+  -e MYSQL_DATABASE=mottuDB \
+  -e MYSQL_USER=mottuser \
+  -e MYSQL_PASSWORD=mottupass \
+  -v mottu-vol:/var/lib/mysql \
+  -p 3306:3306 \
+  mysql:8.0
 
 sleep 30
 
