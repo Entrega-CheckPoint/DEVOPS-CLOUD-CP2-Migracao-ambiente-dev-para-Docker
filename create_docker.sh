@@ -11,6 +11,8 @@ docker run -d \
     --network rm557313-net \
     -e MYSQL_ROOT_PASSWORD=senha123 \
     -e MYSQL_DATABASE=mottuDB \
+    -e MYSQL_USER=mottuser \
+    -e MYSQL_PASSWORD=mottupass \
     -p 3306:3306 \
     mysql/mysql-server:latest
 
