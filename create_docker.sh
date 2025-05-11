@@ -16,7 +16,7 @@ docker run -d \
 
 sleep 30
 
-docker exec -i mysql-rm557313 mysql -umottuser -pmottupass mottuDB < cria_tabelas.sql
+docker exec -i mysql-rm557313 mysql -umottuser -pmottupass mottuDB < create_table.sql
 
 docker run -d --name adminer-rm557313 --network rm557313-net -p 8081:8080 adminer
 
