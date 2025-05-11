@@ -1,15 +1,22 @@
-echo "Iniciando a containização..."
+#!/bin/bash
+
 echo ""
+echo "============================================================"
+echo "   INICIANDO A CONTAINERIZAÇÃO DO PROJETO MOTTU "
+echo "============================================================"
+echo ""
+
 cd deploy
 
-echo "Criando a rede virtual 'rm557313-net'"
+echo ""
+echo "🔵 Criando a rede virtual 'rm557313-net'"
 docker network create rm557313-net
-
 docker network ls
 
 echo ""
-echo "Criando banco de dados MySQL 'mysql-rm557313'"
-
+echo "============================================================"
+echo " 🛢️  Criando container do banco de dados MySQL 'mysql-rm557313'"
+echo "============================================================"
 docker run -d \
   --name mysql-rm557313 \
   --network rm557313-net \
@@ -21,36 +28,58 @@ docker run -d \
   -p 3306:3306 \
   mysql:8.0
 
+echo ""
+echo "⏳ Aguardando banco de dados iniciar..."
 sleep 20
 
 echo ""
-echo "Criando as tabelas do banco de dados"
-
+echo "📄 Criando tabelas no banco de dados"
 docker exec -i mysql-rm557313 mysql -umottuser -pmottupass mottuDB < create_table.sql
 
 echo ""
-echo "Criando as interface grafica para interagir com banco"
-
+echo "============================================================"
+echo " 🖥️  Criando container da interface gráfica Adminer 'adminer-rm557313'"
+echo "============================================================"
 docker run -d --name adminer-rm557313 --network rm557313-net -p 8081:8080 adminer
 
 echo ""
-echo "Build da aplicação ASP.NET"
-
+echo "============================================================"
+echo " 🛠️  Build da aplicação ASP.NET"
+echo "============================================================"
 docker build -t mottu-api .
 
 echo ""
-echo "Criando container da aplicação ASP.NET"
-
+echo "============================================================"
+echo " 📦 Criando container da aplicação ASP.NET 'mottu-api-rm557313'"
+echo "============================================================"
 docker run -d --name mottu-api-rm557313 --network rm557313-net -p 8080:8080 mottu-api
 
 echo ""
-echo "============================================================================"
+echo "============================================================"
+echo " ✅ TUDO PRONTO! SISTEMA CONTAINERIZADO COM SUCESSO ✅"
+echo "============================================================"
 echo ""
 
 echo ""
-echo "Lista de imagens no Docker"
+echo "============================================================"
+echo "Lista volumes no Docker: 'docker volume ls'"
+echo "============================================================"
+docker volume ls
+
+echo ""
+echo "============================================================"
+echo "Lista de imagens no Docker: 'docker image ls'"
 docker image ls
+echo "============================================================"
 
 echo ""
-echo "Lista de conteiners ativos"
+echo "============================================================"
+echo "📦 Lista de containers ativos: 'docker ps'"
 docker ps
+echo "============================================================"
+
+echo ""
+echo "============================================================"
+
+echo "📦 Status dos containers: 'docker stats'"
+docker stats
