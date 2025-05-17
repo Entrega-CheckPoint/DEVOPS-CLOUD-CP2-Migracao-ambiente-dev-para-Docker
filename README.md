@@ -7,10 +7,9 @@ Migrar o ambiente DEV da DimDim para container rodando a aplicação em uma VM.
 ## **Metodologia**
 
 1. Criar a network para comunicação interna dos containers.
-2. Criar container com banco de dados MySQL.
+2. Criar o container com banco de dados MySQL.
 3. Criar o container da interface gráfica usando _Adminer_
-4. Criar a imagem personalizada da nossa aplicação ASP.NET.
-5. Criar o container da nossa aplicação ASP.NET.
+4. Criar o container da nossa aplicação ASP.NET.
    > Usar docker com imagens oficiais do Dockerhub para iniciar a aplicação.
 
 ## **Implementação da solução**
@@ -56,14 +55,20 @@ chmod 744 create_docker.sh
 cd deploy
 ```
 
-2. Criar e listar a redes locais
+2. salvar o diretório em que está a aplicação
+
+```sh
+CAMINHO=$(pwd)
+```
+
+3. Criar e listar a redes locais
 
 ```sh
 docker network create rm557313-net
 docker network ls
 ```
 
-3. Criar o container com servidor MySQL para criar o banco de dados
+4. Criar o container com servidor MySQL para criar o banco de dados
 
 ```sh
 
@@ -80,29 +85,30 @@ docker run -d \
 
 ```
 
-4. Criar as tabelas no banco de dados
+5. Criar as tabelas no banco de dados
 
 ```sh
 docker exec -i mysql-rm557313 mysql -umottuser -pmottupass mottuDB < create_table.sql
 
 ```
 
-5. Criar o container da interface gráfica usando _Adminer_
+6. Criar o container da interface gráfica usando _Adminer_
 
 ```sh
 docker run -d --name adminer-rm557313 --network rm557313-net -p 8081:8080 adminer
 ```
 
-6. Criar a imagem personalizada da nossa aplicação ASP.NET.
-
-```sh
-docker build -t mottu-api .
-```
-
 7. Criar o container da nossa aplicação ASP.NET.
 
 ```sh
-docker run -d --name mottu-api-rm557313 --network rm557313-net -p 8080:8080 mottu-api
+docker run -d \
+  --name mottu-api-rm557313 \
+  --network rm557313-net \
+  -p 8080:8080 \
+  -v $CAMINHO:/app \  # Maneira de informar ao docker para usar o caminho como 'app'
+  -w /app \
+  mcr.microsoft.com/dotnet/aspnet:8.0 \
+  dotnet mottu.dll
 ```
 
 8. Listar os Volumes criados
