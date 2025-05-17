@@ -51,7 +51,7 @@ echo "============================================================"
 docker run -d \
   --name mottu-api-rm557313 \
   --network rm557313-net \
-  -p 8080:80 \
+  -p 8080:8080 \
   -v $CAMINHO:/app \
   -w /app \
   mcr.microsoft.com/dotnet/aspnet:8.0 \
