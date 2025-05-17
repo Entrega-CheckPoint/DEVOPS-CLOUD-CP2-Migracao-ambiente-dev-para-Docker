@@ -8,6 +8,8 @@ echo ""
 
 cd deploy
 
+CAMINHO=$(pwd)
+
 echo ""
 echo "🔵 Criando a rede virtual 'rm557313-net'"
 docker network create rm557313-net
@@ -34,7 +36,7 @@ sleep 20
 
 echo ""
 echo "📄 Criando tabelas no banco de dados"
-docker exec -i mysql-rm557313 mysql -umottuser -pmottupass mottuDB < create_table.sql
+docker exec -i mysql-rm557313 mysql -umottuser -pmottupass mottuDB <create_table.sql
 
 echo ""
 echo "============================================================"
@@ -44,15 +46,16 @@ docker run -d --name adminer-rm557313 --network rm557313-net -p 8081:8080 admine
 
 echo ""
 echo "============================================================"
-echo " 🛠️  Build da aplicação ASP.NET"
-echo "============================================================"
-docker build -t mottu-api .
-
-echo ""
-echo "============================================================"
 echo " 📦 Criando container da aplicação ASP.NET 'mottu-api-rm557313'"
 echo "============================================================"
-docker run -d --name mottu-api-rm557313 --network rm557313-net -p 8080:8080 mottu-api
+docker run -d \
+  --name mottu-api-rm557313 \
+  --network rm557313-net \
+  -p 8080:80 \
+  -v $CAMINHO:/app \
+  -w /app \
+  mcr.microsoft.com/dotnet/aspnet:8.0 \
+  dotnet mottu.dll
 
 echo ""
 echo "============================================================"
@@ -76,7 +79,4 @@ echo ""
 echo "============================================================"
 echo "📦 Lista de containers ativos: 'docker ps'"
 docker ps
-echo "============================================================"
-
-echo ""
 echo "============================================================"

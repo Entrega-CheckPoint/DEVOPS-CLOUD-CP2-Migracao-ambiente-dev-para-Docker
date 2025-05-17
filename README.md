@@ -1,10 +1,10 @@
 # $DEVOPS-CLOUD-CP2-Migracao-ambiente-dev-para-Docker$
 
-## __Objetivo__
+## **Objetivo**
 
 Migrar o ambiente DEV da DimDim para container rodando a aplicação em uma VM.
 
-## __Metodologia__
+## **Metodologia**
 
 1. Criar a network para comunicação interna dos containers.
 2. Criar container com banco de dados MySQL.
@@ -13,7 +13,7 @@ Migrar o ambiente DEV da DimDim para container rodando a aplicação em uma VM.
 5. Criar o container da nossa aplicação ASP.NET.
    > Usar docker com imagens oficiais do Dockerhub para iniciar a aplicação.
 
-## __Implementação da solução__
+## **Implementação da solução**
 
 Para realizar o processo de migração foi realizado um script shell que realiza todas as funções de forma única.
 
@@ -46,7 +46,7 @@ chmod 744 create_docker.sh
 ./create_docker.sh
 ```
 
-## __Código Fonte__
+## **Código Fonte**
 
 #### Script usado -> [create_docker](./create_docker.sh)
 
